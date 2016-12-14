@@ -133,7 +133,7 @@ var Recipe = React.createClass({
           {recipe.name}
         </h4>
         <a
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary"
           href={recipe.link}
           target="_blank"
           title="View recipe"
