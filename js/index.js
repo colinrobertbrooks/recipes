@@ -145,8 +145,10 @@ var App = React.createClass({
               (recipes.map((recipe) => {
                 return (
                   <RecipeCard
-                    recipe={recipe}
                     key={recipe.id}
+                    recipe={recipe}
+                    searchString={searchString}
+                    typeString={typeString}
                   />
                 );
               }))
@@ -234,7 +236,7 @@ var SearchInputGroup = React.createClass({
               type="button"
               className="btn btn-secondary"
               disabled={clearEnabled ? false : true}
-              title="Clear"
+              title={clearEnabled ? 'Clear' : null}
               onClick={onClear}
             >
               <i className={`fa fa-times ${clearEnabled ? 'text-danger' : ''}`}/>
@@ -268,17 +270,24 @@ var RecipeCount = React.createClass({
 
 var RecipeCard = React.createClass({
   propTypes: {
-    recipe: React.PropTypes.object.isRequired
+    recipe: React.PropTypes.object.isRequired,
+    searchString: React.PropTypes.string.isRequired,
+    typeString: React.PropTypes.string.isRequired
   },
   render: function() {
-    var {recipe} = this.props;
+    var {recipe, searchString, typeString} = this.props;
     return (
       <div className="card card-block text-xs-center">
         <h4 className="card-title">
-          {recipe.name}
-          <small className="text-muted">
-            {' '}({recipe.type})
-          </small>
+          <RecipeName
+            string={recipe.name}
+            subString={searchString}
+          />
+          {typeString === 'All' ?
+            <small className="text-muted">
+              {' '}({recipe.type})
+            </small>
+          : null}
         </h4>
         <a
           className="btn btn-primary"
@@ -292,6 +301,39 @@ var RecipeCard = React.createClass({
     );
   }
 });
+
+var RecipeName = React.createClass({
+  propTypes: {
+    string: React.PropTypes.string.isRequired,
+    subString: React.PropTypes.string
+  },
+  render: function() {
+    var {string, subString} = this.props;
+    if(subString.length) {
+      var regex = new RegExp('' + subString + '', 'gi' );
+      var segments = string.split(regex);
+      var replacements = string.match(regex);
+      var children = [];
+      segments.forEach(function(segment, i) {
+        children.push(React.DOM.span({}, segment));
+        if(i === segments.length - 1){ return; }
+        children.push(React.DOM.span({className: 'bg-info'}, replacements[i]));
+      });
+      return (
+        <span>
+          {children}
+        </span>
+      );
+    } else {
+      return (
+        <span>
+          {string}
+        </span>
+      );
+    }
+  }
+});
+
 
 /****************
   document ready
