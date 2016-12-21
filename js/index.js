@@ -1,40 +1,44 @@
-/****
+/************
   namespace
-*****/
+*************/
 var Recipes = window.Recipes || {};
 window.Recipes = Recipes;
 Recipes.helpers = {};
 
-/****
+/************
   helpers
-*****/
+*************/
 Recipes.helpers.processRecipeData = function(data) {
   var result = [];
   data.forEach(function(d, i) {
     result.push({
       id: i,
       name: d.gsx$name.$t,
+      type: d.gsx$type.$t,
       link: d.gsx$link.$t
     });
   });
   return result;
 };
 
-/****
+/******************
   react components
-*****/
+*******************/
 var App = React.createClass({
   getInitialState: function() {
     return {
       allRecipes: [],
-      searchRecipes: [],
-      searchString: ''
+      allTypes: [],
+      recipes: [],
+      searchString: '',
+      types: [],
+      typeString: 'All'
     };
   },
   componentDidMount: function() {
-    this.handleBeerDataXHR();
+    this.handleRecipeDataXHR();
   },
-  handleBeerDataXHR: function() {
+  handleRecipeDataXHR: function() {
     var url = 'https://spreadsheets.google.com/feeds/list/106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8/od6/public/values?alt=json';
     $.ajax({
       dataType: 'json',
@@ -51,25 +55,68 @@ var App = React.createClass({
             return 1;
           return 0;
         });
+        var types = this.getTypes(recipes);
         this.setState({
           allRecipes: recipes,
-          searchRecipes: recipes
+          allTypes: types,
+          recipes: recipes,
+          types: types
         });
       }
     });
   },
-  handleSearch: function(event) {
+  _handleSearchInputChange: function(event) {
     var searchString = event.target.value;
-    var searchRecipes = this.state.allRecipes.filter(function(recipe) {
-      return recipe.name.toLowerCase().search(searchString.toLowerCase()) !== -1;
-    });
+    var recipes = this.getRecipes(this.state.typeString, searchString);
+    var types = this.getTypes(recipes);
     this.setState({
-      searchRecipes: searchRecipes,
-      searchString: searchString
+      recipes: recipes,
+      searchString: searchString,
+      types: types
     });
   },
+  _handleTypeDropdownSelection: function(typeString) {
+    var recipes = this.getRecipes(typeString, this.state.searchString);
+    var types = this.getTypes(recipes);
+    this.setState({
+      recipes: recipes,
+      types: types,
+      typeString: typeString
+    });
+  },
+  _handleClear: function() {
+    this.setState({
+      recipes: this.state.allRecipes,
+      searchString: '',
+      types: this.state.allTypes,
+      typeString: 'All'
+    });
+  },
+  handleFilter: function(typeString) {
+    if(typeString === 'All') {
+      return this.state.allRecipes;
+    } else {
+      return this.state.allRecipes.filter(function(d) {
+        return d.type === typeString;
+      });
+    }
+  },
+  handleSearch: function(recipes, searchString) {
+    return recipes.filter(function(recipe) {
+      return recipe.name.toLowerCase().search(searchString.toLowerCase()) !== -1;
+    });
+  },
+  getRecipes: function(typeString, searchString) {
+    var filteredRecipes = this.handleFilter(typeString);
+    return this.handleSearch(filteredRecipes, searchString);
+  },
+  getTypes: function(data) {
+    return data.map(function(d) { return d.type; })
+      .filter((v, i, a) => a.indexOf(v) === i)
+      .sort();
+  },
   render: function() {
-    var {allRecipes, searchRecipes, searchString} = this.state;
+    var {allRecipes, recipes, searchString, types, typeString} = this.state;
     return (
       <div className="row">
         <div className="col-xs-12 col-sm-10 offset-sm-1 col-md-12 offset-md-0
@@ -77,42 +124,35 @@ var App = React.createClass({
           <h1>Recipes</h1>
           {allRecipes.length ?
             <div className="form-group">
-              <input
-                type="text"
-                className="form-control text-xs-center"
-                placeholder="search recipes..."
-                style={{
-                  marginTop: '20px'
-                }}
-                value={searchString}
-                onChange={this.handleSearch}
+              <SearchInputGroup
+                searchString={searchString}
+                types={types}
+                typeString={typeString}
+                onDropdownSelection={this._handleTypeDropdownSelection}
+                onInputChange={this._handleSearchInputChange}
+                onClear={this._handleClear}
               />
-              <small
-                className="text-muted"
-                style={{
-                  fontStyle: 'italic'
-                }}
-              >
-                {searchRecipes.length}
-                {searchRecipes.length === 1 ? ' recipe' : ' recipes'}
-              </small>
+              <RecipeCount
+                recipes={recipes}
+              />
             </div>
           : null}
           <hr/>
           {!allRecipes.length ?
             <p>Loading recipes...</p>
           :
-            (searchRecipes.length ?
-              (searchRecipes.map((recipe) => {
+            (recipes.length ?
+              (recipes.map((recipe) => {
                 return (
-                  <Recipe
+                  <RecipeCard
                     recipe={recipe}
                     key={recipe.id}
                   />
                 );
               }))
             :
-              <p>No recipes matching <strong>{searchString}</strong>...</p>
+              <p>No {typeString !== 'All' ? typeString.toLowerCase() + ' ' : ''}
+              recipes matching <strong>{searchString}</strong>...</p>
             )
           }
         </div>
@@ -121,7 +161,112 @@ var App = React.createClass({
   }
 });
 
-var Recipe = React.createClass({
+var SearchInputGroup = React.createClass({
+  propTypes: {
+    searchString: React.PropTypes.string.isRequired,
+    types: React.PropTypes.array.isRequired,
+    typeString: React.PropTypes.string.isRequired,
+    onDropdownSelection: React.PropTypes.func.isRequired,
+    onInputChange: React.PropTypes.func.isRequired,
+    onClear: React.PropTypes.func.isRequired
+  },
+  getClearEnabledBool: function() {
+    if(this.props.searchString.length || this.props.typeString !== 'All') {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  render: function() {
+    var {searchString, types, typeString, onDropdownSelection, onInputChange,
+      onClear} = this.props;
+    var clearEnabled = this.getClearEnabledBool();
+    return (
+      <div>
+        <div
+          className="input-group"
+          style={{
+            marginTop: '20px'
+          }}
+        >
+          <div className="input-group-btn">
+            <button
+              type="button"
+              className="btn btn-secondary dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {typeString}
+            </button>
+            <div className="dropdown-menu">
+              <a
+                className={`dropdown-item ${typeString === 'All' ? 'active' : null}`}
+                style={{ cursor: 'pointer' }}
+                onClick={() => { onDropdownSelection('All'); }}
+              >
+                All
+              </a>
+              {types.map((type, i) => {
+                return (
+                  <a
+                    key={i}
+                    className={`dropdown-item ${typeString === type ? 'active' : null}`}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => { onDropdownSelection(type); }}
+                  >
+                    {type}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+          <input
+            type="text"
+            className="form-control text-xs-center"
+            placeholder={`Search ${typeString.toLowerCase()} recipes...`}
+            autoFocus="true"
+            value={searchString}
+            onChange={onInputChange}
+          />
+          <span className="input-group-btn">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              disabled={clearEnabled ? false : true}
+              title="Clear"
+              onClick={onClear}
+            >
+              <i className={`fa fa-times ${clearEnabled ? 'text-danger' : ''}`}/>
+            </button>
+          </span>
+        </div>
+      </div>
+    );
+  }
+});
+
+var RecipeCount = React.createClass({
+  propTypes: {
+    recipes: React.PropTypes.array.isRequired
+  },
+  render: function() {
+    var {recipes} = this.props;
+    return (
+      <small
+        className="text-muted"
+        style={{
+          fontStyle: 'italic'
+        }}
+      >
+        {recipes.length}
+        {recipes.length === 1 ? ' recipe' : ' recipes'}
+      </small>
+    );
+  }
+});
+
+var RecipeCard = React.createClass({
   propTypes: {
     recipe: React.PropTypes.object.isRequired
   },
@@ -131,6 +276,9 @@ var Recipe = React.createClass({
       <div className="card card-block text-xs-center">
         <h4 className="card-title">
           {recipe.name}
+          <small className="text-muted">
+            {' '}({recipe.type})
+          </small>
         </h4>
         <a
           className="btn btn-primary"
@@ -145,9 +293,9 @@ var Recipe = React.createClass({
   }
 });
 
-/****
+/****************
   document ready
-*****/
+*****************/
 $(document).ready(function(){
   ReactDOM.render(
     <App />,
