@@ -6,13 +6,17 @@ Things on the internet that we eat.
 
 `$ npm install`
 
-## Development
+## Develop
 
 `$ npm start`
 
 ## Test
 
-`$ npm test`
+`$ npm run validate`
+
+## Build
+
+`$ npm run build`
 
 ## Boilerplate
 

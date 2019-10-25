@@ -1,0 +1,20 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "colinrcummings",
+    "plugin:@typescript-eslint/recommended",
+    "colinrcummings/jest",
+    "colinrcummings/prettier",
+    "colinrcummings/prettier/react"
+  ],
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".tsx"]
+      }
+    }
+  }
+}
