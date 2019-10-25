@@ -10,10 +10,13 @@
   "env": {
     "browser": true
   },
+  "rules": {
+    "import/no-extraneous-dependencies": "off"
+  },
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".ts", ".tsx"]
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   }
