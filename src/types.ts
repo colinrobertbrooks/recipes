@@ -1,4 +1,4 @@
-export type GoogleSheetRow = {
+export type GoogleSheetsRowType = {
   gsx$name: {
     $t: string;
   };
@@ -10,7 +10,7 @@ export type GoogleSheetRow = {
   };
 };
 
-export type GoogleSheetRowsType = Array<GoogleSheetRow>;
+export type GoogleSheetsEntryType = Array<GoogleSheetsRowType>;
 
 export type RecipeType = {
   id: number;

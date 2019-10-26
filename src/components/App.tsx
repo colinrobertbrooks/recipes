@@ -28,15 +28,15 @@ const App: React.FC = () => {
   return (
     <Container>
       <Row>
-        <Col md={12}>
-          <h1 className="mt-3 text-center">Recipes</h1>
+        <Col md={12} className="text-center">
+          <h1 className="mt-3">Recipes</h1>
           {((): JSX.Element => {
             if (loading) {
-              return <p className="text-center">Loading recipes...</p>;
+              return <p className="text-muted">Loading recipes...</p>;
             }
 
             if (error) {
-              return <p>Error loading recipes!</p>;
+              return <p className="text-danger">Error loading recipes!</p>;
             }
 
             if (recipies.length) {
@@ -49,7 +49,7 @@ const App: React.FC = () => {
               );
             }
 
-            return <p className="text-center">No recipes.</p>;
+            return <p>No recipes.</p>;
           })()}
         </Col>
       </Row>
