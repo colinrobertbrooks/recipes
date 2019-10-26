@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import api from '../api';
+import { RecipesType } from '../types';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [recipies, setRecipies] = useState([]);
+  const [recipies, setRecipies] = useState<RecipesType>([]);
 
   useEffect(() => {
     const fetchRecipes = async (): Promise<void> => {
@@ -35,10 +36,20 @@ const App: React.FC = () => {
             }
 
             if (error) {
-              return <p>Error!</p>;
+              return <p>Error loading recipes!</p>;
             }
 
-            return <>{JSON.stringify(recipies)}</>;
+            if (recipies.length) {
+              return (
+                <>
+                  {recipies.map(({ id, name }) => (
+                    <p key={id}>{name}</p>
+                  ))}
+                </>
+              );
+            }
+
+            return <p className="text-center">No recipes.</p>;
           })()}
         </Col>
       </Row>
