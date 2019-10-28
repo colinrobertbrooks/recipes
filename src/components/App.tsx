@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import api from '../api';
 import { RecipesType } from '../types';
+import Recipe from './Recipe';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,13 @@ const App: React.FC = () => {
   return (
     <Container>
       <Row>
-        <Col md={12} className="text-center">
+        <Col
+          xs={{ size: 12, offset: 0 }}
+          sm={{ size: 10, offset: 1 }}
+          md={{ size: 12, offset: 0 }}
+          lg={{ size: 8, offset: 2 }}
+          className="text-center"
+        >
           <h1 className="mt-3">Recipes</h1>
           {((): JSX.Element => {
             if (loading) {
@@ -42,8 +49,8 @@ const App: React.FC = () => {
             if (recipies.length) {
               return (
                 <>
-                  {recipies.map(({ id, name }) => (
-                    <p key={id}>{name}</p>
+                  {recipies.map(({ id, name, type, link }) => (
+                    <Recipe key={id} name={name} type={type} link={link} />
                   ))}
                 </>
               );
