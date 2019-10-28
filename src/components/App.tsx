@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import api from '../api';
 import { RecipesType } from '../types';
 import { filterRecipes, getRecipeTypeOptions, sortRecipes } from '../utils';
+import Counter from './Counter';
 import Recipe from './Recipe';
 import SearchFilter from './SearchFilter';
 
@@ -80,17 +81,25 @@ const App: React.FC = () => {
                         setRecipeNameSearch(null);
                       }}
                     />
+                    <Counter count={filteredRecipes.length} />
                   </SearchFilterWrapper>
-                  {filteredRecipes.map(({ id, name, type, link }) => (
-                    <Recipe
-                      key={id}
-                      name={name}
-                      type={type}
-                      link={link}
-                      nameSearch={recipeNameSearch}
-                      showType={!recipeType}
-                    />
-                  ))}
+                  {filteredRecipes.length ? (
+                    filteredRecipes.map(({ id, name, type, link }) => (
+                      <Recipe
+                        key={id}
+                        name={name}
+                        type={type}
+                        link={link}
+                        nameSearch={recipeNameSearch}
+                        showType={!recipeType}
+                      />
+                    ))
+                  ) : (
+                    <p>
+                      No <strong>{recipeType}</strong> recipes matching{' '}
+                      <strong>{recipeNameSearch}...</strong>
+                    </p>
+                  )}
                 </>
               );
             }
