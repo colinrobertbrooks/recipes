@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
 export { default as mungeGoogleSheetsEntry } from './mungeGoogleSheetsEntry';
+export { default as sortRecipes } from './sortRecipes';

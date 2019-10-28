@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import api from '../api';
 import { RecipesType } from '../types';
+import { sortRecipes } from '../utils';
 import Recipe from './Recipe';
 
 const App: React.FC = () => {
@@ -16,7 +17,7 @@ const App: React.FC = () => {
 
       try {
         const nextRecipies = await api.getRecipes();
-        setRecipies(nextRecipies);
+        setRecipies(sortRecipes(nextRecipies));
       } catch (e) {
         setError(e);
       }

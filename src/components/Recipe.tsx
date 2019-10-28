@@ -1,12 +1,7 @@
 import React from 'react';
 import { Button, Card, CardBody } from 'reactstrap';
 import styled from 'styled-components';
-
-interface RecipeProps {
-  name: string;
-  type: string;
-  link: string;
-}
+import { RecipeProps } from '../types';
 
 const CardWrapper = styled.div`
   margin-bottom: 12px;
@@ -27,7 +22,8 @@ const Recipe: React.FC<RecipeProps> = ({ name, type, link }) => (
     <Card>
       <CardBody>
         <CardHeader>
-          {name} <small className="text-muted">({type})</small>
+          <span data-testid="recipe-name">{name}</span>{' '}
+          <small className="text-muted">({type})</small>
         </CardHeader>
         <CardLink color="primary" href={link}>
           Recipe

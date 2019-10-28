@@ -12,7 +12,7 @@ export type GoogleSheetsRowType = {
 
 export type GoogleSheetsEntryType = Array<GoogleSheetsRowType>;
 
-export type RecipeType = {
+type RecipeType = {
   id: number;
   name: string;
   type: string;
@@ -20,3 +20,9 @@ export type RecipeType = {
 };
 
 export type RecipesType = Array<RecipeType>;
+
+export interface RecipeProps {
+  name: string;
+  type: string;
+  link: string;
+}

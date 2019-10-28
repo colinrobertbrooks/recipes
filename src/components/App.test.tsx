@@ -6,36 +6,41 @@ import {
 import MockAdapter from 'axios-mock-adapter';
 import React from 'react';
 import { adapter } from '../api';
+import { GoogleSheetsRowType, RecipeProps } from '../types';
 import App from './App';
 
 const mockAdapter = new MockAdapter(adapter);
 
+const makeGoogleSheetsRow = ({
+  name,
+  type,
+  link
+}: RecipeProps): GoogleSheetsRowType => ({
+  gsx$name: {
+    $t: name
+  },
+  gsx$type: {
+    $t: type
+  },
+  gsx$link: {
+    $t: link
+  }
+});
+
 const defaultGoogleSheetsResonseData = {
   feed: {
     entry: [
-      {
-        gsx$name: {
-          $t: 'Chocolate Chip Cookies'
-        },
-        gsx$type: {
-          $t: 'Desert'
-        },
-        gsx$link: {
-          $t:
-            'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
-        }
-      },
-      {
-        gsx$name: {
-          $t: 'Lasagna'
-        },
-        gsx$type: {
-          $t: 'Dinner'
-        },
-        gsx$link: {
-          $t: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
-        }
-      }
+      makeGoogleSheetsRow({
+        name: 'Lasagna',
+        type: 'Dinner',
+        link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
+      }),
+      makeGoogleSheetsRow({
+        name: 'Chocolate Chip Cookies',
+        type: 'Desert',
+        link:
+          'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
+      })
     ]
   }
 };
@@ -68,10 +73,13 @@ describe('App', () => {
       mockGetRecipes();
     });
 
-    test('renders recipes', async () => {
-      const { getByText } = await renderApp();
-      expect(getByText('Chocolate Chip Cookies')).toBeInTheDocument();
-      expect(getByText('Lasagna')).toBeInTheDocument();
+    test('renders sorted recipes', async () => {
+      const { getAllByTestId } = await renderApp();
+      const renderedNames = getAllByTestId('recipe-name');
+      const expectedNames = ['Chocolate Chip Cookies', 'Lasagna'];
+      renderedNames.forEach((el, idx) =>
+        expect(el.textContent).toBe(expectedNames[idx])
+      );
     });
   });
 
