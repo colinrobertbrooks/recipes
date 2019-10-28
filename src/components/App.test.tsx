@@ -6,7 +6,7 @@ import {
 import MockAdapter from 'axios-mock-adapter';
 import React from 'react';
 import { adapter } from '../api';
-import { GoogleSheetsRowType, RecipeProps } from '../types';
+import { GoogleSheetsRowType } from '../types';
 import App from './App';
 
 const mockAdapter = new MockAdapter(adapter);
@@ -15,7 +15,11 @@ const makeGoogleSheetsRow = ({
   name,
   type,
   link
-}: RecipeProps): GoogleSheetsRowType => ({
+}: {
+  name: string;
+  type: string;
+  link: string;
+}): GoogleSheetsRowType => ({
   gsx$name: {
     $t: name
   },

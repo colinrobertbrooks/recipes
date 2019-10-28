@@ -25,6 +25,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   recipeType,
   recipeTypeOptions,
   handleRecipeTypeChange,
+  recipeNameSearch,
+  handleRecipeNameSearchChange,
   handleClear
 }) => {
   const [typeDropdownIsOpen, setTypeDropdownIsOpen] = useState(false);
@@ -43,6 +45,12 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
           {recipeType || 'All'}
         </DropdownToggle>
         <DropdownMenu>
+          <DropdownItem
+            active={recipeType === null}
+            onClick={(): void => handleRecipeTypeChange(null)}
+          >
+            All
+          </DropdownItem>
           {recipeTypeOptions.map(({ value, active, disabled }) => (
             <DropdownItem
               key={value}
@@ -55,13 +63,20 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
           ))}
         </DropdownMenu>
       </InputGroupButtonDropdown>
-      <Input className="text-center" />
+      <Input
+        spellCheck={false}
+        className="text-center"
+        value={recipeNameSearch || ''}
+        onChange={(event): void =>
+          handleRecipeNameSearchChange(event.currentTarget.value)
+        }
+      />
       <InputGroupAddon addonType="append">
         <Button
           aria-label="Clear"
           color="primary"
           outline
-          disabled={!recipeType}
+          disabled={!recipeType && !recipeNameSearch}
           onClick={(): void => handleClear()}
         >
           <ClearIconWrapper aria-hidden="true">×</ClearIconWrapper>

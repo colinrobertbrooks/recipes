@@ -1,4 +1,5 @@
 import React from 'react';
+import Highlighter from 'react-highlight-words';
 import { Button, Card, CardBody } from 'reactstrap';
 import styled from 'styled-components';
 import { RecipeProps } from '../types';
@@ -9,6 +10,7 @@ const CardWrapper = styled.div`
 
 const CardHeader = styled.h2`
   font-size: 1.5rem;
+  margin-bottom: 12px;
 `;
 
 const CardLink = styled(Button)`
@@ -17,15 +19,31 @@ const CardLink = styled(Button)`
   }
 `;
 
-const Recipe: React.FC<RecipeProps> = ({ name, type, link }) => (
+const Recipe: React.FC<RecipeProps> = ({
+  name,
+  type,
+  link,
+  nameSearch,
+  showType
+}) => (
   <CardWrapper>
     <Card>
       <CardBody>
         <CardHeader>
-          <span data-testid="recipe-name">{name}</span>{' '}
-          <small className="text-muted">({type})</small>
+          <Highlighter
+            data-testid="recipe-name"
+            highlightClassName="highlight-word-search"
+            searchWords={[nameSearch || '']}
+            textToHighlight={name}
+          />
+          {showType && <small className="text-muted"> ({type})</small>}
         </CardHeader>
-        <CardLink color="primary" href={link}>
+        <CardLink
+          color="primary"
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Recipe
         </CardLink>
       </CardBody>

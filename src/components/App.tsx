@@ -16,11 +16,14 @@ const App: React.FC = () => {
   const [error, setError] = useState(null);
   const [recipes, setRecipes] = useState<RecipesType>([]);
   const [recipeType, setRecipeType] = useState(null);
+  const [recipeNameSearch, setRecipeNameSearch] = useState(null);
   const filters = {
-    recipeType
+    recipeType,
+    recipeNameSearch
   };
   const recipeTypeOptions = getRecipeTypeOptions({
     recipes,
+    filters,
     currentValue: recipeType
   });
   const filteredRecipes = filterRecipes({ recipes, filters });
@@ -70,13 +73,23 @@ const App: React.FC = () => {
                       recipeType={recipeType}
                       recipeTypeOptions={recipeTypeOptions}
                       handleRecipeTypeChange={setRecipeType}
+                      recipeNameSearch={recipeNameSearch}
+                      handleRecipeNameSearchChange={setRecipeNameSearch}
                       handleClear={(): void => {
                         setRecipeType(null);
+                        setRecipeNameSearch(null);
                       }}
                     />
                   </SearchFilterWrapper>
                   {filteredRecipes.map(({ id, name, type, link }) => (
-                    <Recipe key={id} name={name} type={type} link={link} />
+                    <Recipe
+                      key={id}
+                      name={name}
+                      type={type}
+                      link={link}
+                      nameSearch={recipeNameSearch}
+                      showType={!recipeType}
+                    />
                   ))}
                 </>
               );

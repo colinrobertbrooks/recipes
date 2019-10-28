@@ -25,6 +25,8 @@ export interface RecipeProps {
   name: string;
   type: string;
   link: string;
+  nameSearch: string | null;
+  showType: boolean;
 }
 
 type RecipeTypeType = {
@@ -39,9 +41,12 @@ export interface SearchFilterProps {
   recipeType: string | null;
   recipeTypeOptions: RecipeTypeOptionsType;
   handleRecipeTypeChange: Function;
+  recipeNameSearch: string | null;
+  handleRecipeNameSearchChange: Function;
   handleClear: Function;
 }
 
 export type FiltersType = {
   recipeType: string | null;
+  recipeNameSearch: string | null;
 };
