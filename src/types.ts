@@ -26,3 +26,22 @@ export interface RecipeProps {
   type: string;
   link: string;
 }
+
+type RecipeTypeType = {
+  value: string;
+  active: boolean;
+  disabled: boolean;
+};
+
+export type RecipeTypeOptionsType = Array<RecipeTypeType>;
+
+export interface SearchFilterProps {
+  recipeType: string | null;
+  recipeTypeOptions: RecipeTypeOptionsType;
+  handleRecipeTypeChange: Function;
+  handleClear: Function;
+}
+
+export type FiltersType = {
+  recipeType: string | null;
+};
