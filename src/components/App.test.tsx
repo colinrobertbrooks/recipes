@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   render,
   RenderResult,
   waitForElementToBeRemoved
@@ -55,6 +56,7 @@ describe('App', () => {
   });
 
   const recipeTypeFilterLableText = /filter recipe type/;
+  const recipeNameSearchPlaceholderText = 'search recipe names';
   const clearButtonLabelText = 'clear filter and search';
 
   describe('on api success', () => {
@@ -85,20 +87,49 @@ describe('App', () => {
       );
     });
 
-    test('filters by recipe type', async () => {
+    test('filters recipe type', async () => {
       const { getByLabelText, getByText, queryByText } = await renderApp();
-      // select desert
+      // filter by desert
       getByLabelText(recipeTypeFilterLableText).click();
       getByText('Desert').click();
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(getByText('Chocolate Chip Cookies')).toBeInTheDocument();
       expect(queryByText('Lasagna')).not.toBeInTheDocument();
-      // clear selection
+      // clear filter
       getByLabelText(clearButtonLabelText).click();
       expect(getByText('2 recipes')).toBeInTheDocument();
-      // select dinner
+      // filter by dinner
       getByLabelText(recipeTypeFilterLableText).click();
       getByText('Dinner').click();
+      expect(getByText('1 recipe')).toBeInTheDocument();
+      expect(queryByText('Chocolate Chip Cookies')).not.toBeInTheDocument();
+      expect(getByText('Lasagna')).toBeInTheDocument();
+    });
+
+    test('searches recipe name', async () => {
+      const {
+        getByPlaceholderText,
+        getByText,
+        queryByText,
+        getByLabelText
+      } = await renderApp();
+
+      // search for cookie
+      fireEvent.change(getByPlaceholderText(recipeNameSearchPlaceholderText), {
+        target: { value: 'cookie' }
+      });
+      expect(getByText('1 recipe')).toBeInTheDocument();
+      expect(
+        getByText((_, node) => node.textContent === 'Chocolate Chip Cookies')
+      ).toBeInTheDocument();
+      expect(queryByText('Lasagna')).not.toBeInTheDocument();
+      // clear search
+      getByLabelText(clearButtonLabelText).click();
+      expect(getByText('2 recipes')).toBeInTheDocument();
+      // search for lasagna
+      fireEvent.change(getByPlaceholderText(recipeNameSearchPlaceholderText), {
+        target: { value: 'lasagna' }
+      });
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(queryByText('Chocolate Chip Cookies')).not.toBeInTheDocument();
       expect(getByText('Lasagna')).toBeInTheDocument();
