@@ -97,14 +97,18 @@ const App: React.FC = () => {
                   ) : (
                     <p>
                       No <strong>{recipeType}</strong> recipes matching{' '}
-                      <strong>{recipeNameSearch}...</strong>
+                      <strong>{recipeNameSearch}.</strong>
                     </p>
                   )}
                 </>
               );
             }
 
-            return <p>No recipes.</p>;
+            return (
+              <p role="alert" aria-live="assertive">
+                No recipes.
+              </p>
+            );
           })()}
         </Col>
       </Row>

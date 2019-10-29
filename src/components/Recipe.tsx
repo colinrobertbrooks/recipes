@@ -39,6 +39,7 @@ const Recipe: React.FC<RecipeProps> = ({
           {showType && <small className="text-muted"> ({type})</small>}
         </CardHeader>
         <CardLink
+          aria-label={`Recipe for ${name}`}
           color="primary"
           href={link}
           target="_blank"

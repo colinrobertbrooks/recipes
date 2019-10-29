@@ -54,6 +54,9 @@ describe('App', () => {
     mockAdapter.reset();
   });
 
+  const recipeTypeFilterLableText = /filter recipe type/;
+  const clearButtonLabelText = 'clear filter and search';
+
   describe('on api success', () => {
     const recipes = [
       {
@@ -85,16 +88,16 @@ describe('App', () => {
     test('filters by recipe type', async () => {
       const { getByLabelText, getByText, queryByText } = await renderApp();
       // select desert
-      getByLabelText('Recipe Type').click();
+      getByLabelText(recipeTypeFilterLableText).click();
       getByText('Desert').click();
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(getByText('Chocolate Chip Cookies')).toBeInTheDocument();
       expect(queryByText('Lasagna')).not.toBeInTheDocument();
       // clear selection
-      getByLabelText('Clear').click();
+      getByLabelText(clearButtonLabelText).click();
       expect(getByText('2 recipes')).toBeInTheDocument();
       // select dinner
-      getByLabelText('Recipe Type').click();
+      getByLabelText(recipeTypeFilterLableText).click();
       getByText('Dinner').click();
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(queryByText('Chocolate Chip Cookies')).not.toBeInTheDocument();
