@@ -41,7 +41,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         isOpen={typeDropdownIsOpen}
         toggle={toggleTypeDropdown}
       >
-        <DropdownToggle color="primary" outline caret>
+        <DropdownToggle aria-label="Recipe Type" color="primary" outline caret>
           {recipeType || 'All'}
         </DropdownToggle>
         <DropdownMenu>

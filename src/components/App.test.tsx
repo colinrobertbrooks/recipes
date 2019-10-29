@@ -55,21 +55,25 @@ describe('App', () => {
   });
 
   describe('on api success', () => {
-    test('renders sorted recipes', async () => {
-      const recipes = [
-        {
-          name: 'Lasagna',
-          type: 'Dinner',
-          link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
-        },
-        {
-          name: 'Chocolate Chip Cookies',
-          type: 'Desert',
-          link:
-            'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
-        }
-      ];
+    const recipes = [
+      {
+        name: 'Lasagna',
+        type: 'Dinner',
+        link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
+      },
+      {
+        name: 'Chocolate Chip Cookies',
+        type: 'Desert',
+        link:
+          'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
+      }
+    ];
+
+    beforeEach(() => {
       mockGetRecipes({ recipes });
+    });
+
+    test('renders sorted recipes', async () => {
       const { getAllByTestId } = await renderApp();
       const renderedNames = getAllByTestId('recipe-name');
       const expectedNames = ['Chocolate Chip Cookies', 'Lasagna'];
@@ -77,13 +81,35 @@ describe('App', () => {
         expect(el.textContent).toBe(expectedNames[idx])
       );
     });
+
+    test('filters by recipe type', async () => {
+      const { getByLabelText, getByText, queryByText } = await renderApp();
+      // select desert
+      getByLabelText('Recipe Type').click();
+      getByText('Desert').click();
+      expect(getByText('1 recipe')).toBeInTheDocument();
+      expect(getByText('Chocolate Chip Cookies')).toBeInTheDocument();
+      expect(queryByText('Lasagna')).not.toBeInTheDocument();
+      // clear selection
+      getByLabelText('Clear').click();
+      expect(getByText('2 recipes')).toBeInTheDocument();
+      // select dinner
+      getByLabelText('Recipe Type').click();
+      getByText('Dinner').click();
+      expect(getByText('1 recipe')).toBeInTheDocument();
+      expect(queryByText('Chocolate Chip Cookies')).not.toBeInTheDocument();
+      expect(getByText('Lasagna')).toBeInTheDocument();
+    });
   });
 
   describe('on api error', () => {
-    test('renders error message', async () => {
+    beforeEach(() => {
       mockGetRecipes({
         responseCode: 500
       });
+    });
+
+    test('renders error message', async () => {
       const { getByText } = await renderApp();
       expect(getByText('Error loading recipes!')).toBeInTheDocument();
     });
