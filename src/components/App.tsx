@@ -8,7 +8,7 @@ import Counter from './Counter';
 import Recipe from './Recipe';
 import SearchFilter from './SearchFilter';
 
-const SearchFilterWrapper = styled.div`
+const SearchFilterCounterWrapper = styled.div`
   margin-bottom: 16px;
 `;
 
@@ -69,7 +69,7 @@ const App: React.FC = () => {
             if (recipes.length) {
               return (
                 <>
-                  <SearchFilterWrapper>
+                  <SearchFilterCounterWrapper>
                     <SearchFilter
                       recipeType={recipeType}
                       recipeTypeOptions={recipeTypeOptions}
@@ -82,7 +82,7 @@ const App: React.FC = () => {
                       }}
                     />
                     <Counter count={filteredRecipes.length} />
-                  </SearchFilterWrapper>
+                  </SearchFilterCounterWrapper>
                   {filteredRecipes.length ? (
                     filteredRecipes.map(({ id, name, type, link }) => (
                       <Recipe
