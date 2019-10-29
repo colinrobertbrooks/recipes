@@ -68,7 +68,7 @@ describe('App', () => {
       },
       {
         name: 'Chocolate Chip Cookies',
-        type: 'Desert',
+        type: 'Dessert',
         link:
           'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
       }
@@ -89,9 +89,9 @@ describe('App', () => {
 
     test('filters recipe type', async () => {
       const { getByLabelText, getByText, queryByText } = await renderApp();
-      // filter by desert
+      // filter by dessert
       getByLabelText(recipeTypeFilterLableText).click();
-      getByText('Desert').click();
+      getByText('Dessert').click();
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(getByText('Chocolate Chip Cookies')).toBeInTheDocument();
       expect(queryByText('Lasagna')).not.toBeInTheDocument();
