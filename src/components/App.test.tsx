@@ -6,7 +6,7 @@ import {
 import MockAdapter from 'axios-mock-adapter';
 import React from 'react';
 import { adapter } from '../api';
-import { GoogleSheetsRowType } from '../types';
+import { GoogleSheetsRowType, RecipeType } from '../types';
 import App from './App';
 
 const mockAdapter = new MockAdapter(adapter);
@@ -15,11 +15,7 @@ const makeGoogleSheetsRow = ({
   name,
   type,
   link
-}: {
-  name: string;
-  type: string;
-  link: string;
-}): GoogleSheetsRowType => ({
+}: RecipeType): GoogleSheetsRowType => ({
   gsx$name: {
     $t: name
   },
@@ -31,33 +27,19 @@ const makeGoogleSheetsRow = ({
   }
 });
 
-const defaultGoogleSheetsResonseData = {
-  feed: {
-    entry: [
-      makeGoogleSheetsRow({
-        name: 'Lasagna',
-        type: 'Dinner',
-        link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
-      }),
-      makeGoogleSheetsRow({
-        name: 'Chocolate Chip Cookies',
-        type: 'Desert',
-        link:
-          'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
-      })
-    ]
-  }
-};
-
 const mockGetRecipes = ({
   responseCode = 200,
-  responseData = defaultGoogleSheetsResonseData
-} = {}): MockAdapter =>
+  recipes = []
+}: { responseCode?: number; recipes?: Array<RecipeType> } = {}): MockAdapter =>
   mockAdapter
     .onGet(
       '/list/106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8/od6/public/values?alt=json'
     )
-    .replyOnce(responseCode, responseData);
+    .replyOnce(responseCode, {
+      feed: {
+        entry: [...recipes.map(recipe => makeGoogleSheetsRow(recipe))]
+      }
+    });
 
 const renderApp = async (): Promise<RenderResult> => {
   const rtlUtils = render(<App />);
@@ -73,11 +55,21 @@ describe('App', () => {
   });
 
   describe('on api success', () => {
-    beforeEach(() => {
-      mockGetRecipes();
-    });
-
     test('renders sorted recipes', async () => {
+      const recipes = [
+        {
+          name: 'Lasagna',
+          type: 'Dinner',
+          link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
+        },
+        {
+          name: 'Chocolate Chip Cookies',
+          type: 'Desert',
+          link:
+            'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
+        }
+      ];
+      mockGetRecipes({ recipes });
       const { getAllByTestId } = await renderApp();
       const renderedNames = getAllByTestId('recipe-name');
       const expectedNames = ['Chocolate Chip Cookies', 'Lasagna'];
@@ -88,13 +80,10 @@ describe('App', () => {
   });
 
   describe('on api error', () => {
-    beforeEach(() => {
+    test('renders error message', async () => {
       mockGetRecipes({
         responseCode: 500
       });
-    });
-
-    test('renders error message', async () => {
       const { getByText } = await renderApp();
       expect(getByText('Error loading recipes!')).toBeInTheDocument();
     });
