@@ -1,4 +1,4 @@
-export type GoogleSheetsRowType = {
+export interface GoogleSheetsRowType {
   gsx$name: {
     $t: string;
   };
@@ -8,7 +8,7 @@ export type GoogleSheetsRowType = {
   gsx$link: {
     $t: string;
   };
-};
+}
 
 export type GoogleSheetsEntryType = Array<GoogleSheetsRowType>;
 
