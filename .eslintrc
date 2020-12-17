@@ -11,6 +11,7 @@
     "browser": true
   },
   "rules": {
+    "@typescript-eslint/interface-name-prefix": "off",
     "import/no-extraneous-dependencies": "off",
     "react/prop-types": "off"
   },

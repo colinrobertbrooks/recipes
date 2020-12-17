@@ -7,7 +7,7 @@ import {
 import MockAdapter from 'axios-mock-adapter';
 import React from 'react';
 import { adapter } from '../api';
-import { GoogleSheetsRowType, RecipeType } from '../types';
+import { IGoogleSheetsRow, IRecipe } from '../types';
 import App from './App';
 
 const mockAdapter = new MockAdapter(adapter);
@@ -16,7 +16,7 @@ const makeGoogleSheetsRow = ({
   name,
   type,
   link
-}: RecipeType): GoogleSheetsRowType => ({
+}: Omit<IRecipe, 'id'>): IGoogleSheetsRow => ({
   gsx$name: {
     $t: name
   },
@@ -31,7 +31,10 @@ const makeGoogleSheetsRow = ({
 const mockGetRecipes = ({
   responseCode = 200,
   recipes = []
-}: { responseCode?: number; recipes?: Array<RecipeType> } = {}): MockAdapter =>
+}: {
+  responseCode?: number;
+  recipes?: Omit<IRecipe, 'id'>[];
+} = {}): MockAdapter =>
   mockAdapter
     .onGet(
       '/list/106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8/od6/public/values?alt=json'
@@ -55,7 +58,7 @@ describe('App', () => {
     mockAdapter.reset();
   });
 
-  const recipeTypeFilterLableText = /filter recipe type/;
+  const recipeTypeFilterLabelText = /filter recipe type/;
   const recipeNameSearchPlaceholderText = 'search recipe names';
   const clearButtonLabelText = 'clear filter and search';
 
@@ -90,7 +93,7 @@ describe('App', () => {
     test('filters recipe type', async () => {
       const { getByLabelText, getByText, queryByText } = await renderApp();
       // filter by dessert
-      getByLabelText(recipeTypeFilterLableText).click();
+      getByLabelText(recipeTypeFilterLabelText).click();
       getByText('Dessert').click();
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(getByText('Chocolate Chip Cookies')).toBeInTheDocument();
@@ -99,7 +102,7 @@ describe('App', () => {
       getByLabelText(clearButtonLabelText).click();
       expect(getByText('2 recipes')).toBeInTheDocument();
       // filter by dinner
-      getByLabelText(recipeTypeFilterLableText).click();
+      getByLabelText(recipeTypeFilterLabelText).click();
       getByText('Dinner').click();
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(queryByText('Chocolate Chip Cookies')).not.toBeInTheDocument();

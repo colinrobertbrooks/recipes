@@ -2,24 +2,14 @@ import React from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Card, CardBody } from 'reactstrap';
 import styled from 'styled-components';
-import { RecipeProps } from '../types';
+import { IRecipe } from '../types';
 
-const CardWrapper = styled.div`
-  margin-bottom: 12px;
-`;
+export interface IRecipeProps extends Omit<IRecipe, 'id'> {
+  nameSearch: string | null;
+  showType: boolean;
+}
 
-const CardHeader = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 12px;
-`;
-
-const CardLink = styled(Button)`
-  @media (max-width: 576px) {
-    display: block;
-  }
-`;
-
-const Recipe: React.FC<RecipeProps> = ({
+const Recipe: React.FC<IRecipeProps> = ({
   name,
   type,
   link,
@@ -51,5 +41,20 @@ const Recipe: React.FC<RecipeProps> = ({
     </Card>
   </CardWrapper>
 );
+
+const CardWrapper = styled.div`
+  margin-bottom: 12px;
+`;
+
+const CardHeader = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+`;
+
+const CardLink = styled(Button)`
+  @media (max-width: 576px) {
+    display: block;
+  }
+`;
 
 export default Recipe;

@@ -1,12 +1,12 @@
-import { FiltersType, RecipesType } from '../types';
+import { IRecipe, IFilters } from '../types';
 
 const filterRecipes = ({
   recipes,
   filters
 }: {
-  recipes: RecipesType;
-  filters: FiltersType;
-}): RecipesType => {
+  recipes: IRecipe[];
+  filters: IFilters;
+}): IRecipe[] => {
   const { recipeType, recipeNameSearch } = filters;
 
   return recipes.filter(recipe => {

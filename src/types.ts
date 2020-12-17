@@ -1,4 +1,4 @@
-export interface GoogleSheetsRowType {
+export interface IGoogleSheetsRow {
   gsx$name: {
     $t: string;
   };
@@ -10,39 +10,19 @@ export interface GoogleSheetsRowType {
   };
 }
 
-export type GoogleSheetsEntryType = Array<GoogleSheetsRowType>;
-
-export interface RecipeType {
+export interface IRecipe {
+  id: number;
   name: string;
   type: string;
   link: string;
 }
 
-export type RecipesType = Array<RecipeType & { id: number }>;
-
-export interface RecipeProps extends RecipeType {
-  nameSearch: string | null;
-  showType: boolean;
-}
-
-interface RecipeTypeOptionType {
+export interface IRecipeTypeOption {
   value: string;
   active: boolean;
   disabled: boolean;
 }
-
-export type RecipeTypeOptionsType = Array<RecipeTypeOptionType>;
-
-export interface SearchFilterProps {
-  recipeType: string | null;
-  recipeTypeOptions: RecipeTypeOptionsType;
-  handleRecipeTypeChange: Function;
-  recipeNameSearch: string | null;
-  handleRecipeNameSearchChange: Function;
-  handleClear: Function;
-}
-
-export interface FiltersType {
+export interface IFilters {
   recipeType: string | null;
   recipeNameSearch: string | null;
 }

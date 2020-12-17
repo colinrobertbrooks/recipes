@@ -1,7 +1,7 @@
-import { FiltersType, RecipesType, RecipeTypeOptionsType } from '../types';
+import { IFilters, IRecipe, IRecipeTypeOption } from '../types';
 import filterRecipes from './filterRecipes';
 
-const getTypes = (recipes: RecipesType): string[] =>
+const getTypes = (recipes: IRecipe[]): string[] =>
   recipes
     .map(({ type }) => type)
     .reduce((options: string[], type) => {
@@ -16,10 +16,10 @@ const getRecipeTypeOptions = ({
   filters,
   currentValue
 }: {
-  recipes: RecipesType;
-  filters: FiltersType;
+  recipes: IRecipe[];
+  filters: IFilters;
   currentValue: string | null;
-}): RecipeTypeOptionsType => {
+}): IRecipeTypeOption[] => {
   const typesInRecipes = getTypes(recipes);
   const enabledTypes = getTypes(
     filterRecipes({ recipes, filters: { ...filters, recipeType: null } })

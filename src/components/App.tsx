@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import styled from 'styled-components';
 import api from '../api';
-import { RecipesType } from '../types';
+import { IRecipe } from '../types';
 import { filterRecipes, getRecipeTypeOptions, sortRecipes } from '../utils';
 import Counter from './Counter';
 import Recipe from './Recipe';
@@ -13,11 +13,11 @@ const SearchFilterCounterWrapper = styled.div`
 `;
 
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
-  const [recipes, setRecipes] = useState<RecipesType>([]);
-  const [recipeType, setRecipeType] = useState(null);
-  const [recipeNameSearch, setRecipeNameSearch] = useState(null);
+  const [recipes, setRecipes] = useState<IRecipe[]>([]);
+  const [recipeType, setRecipeType] = useState<string | null>(null);
+  const [recipeNameSearch, setRecipeNameSearch] = useState<string | null>(null);
   const filters = {
     recipeType,
     recipeNameSearch

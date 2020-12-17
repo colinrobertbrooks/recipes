@@ -1,7 +1,6 @@
 import { render, RenderResult } from '@testing-library/react';
 import React from 'react';
-import { RecipeProps } from '../types';
-import Recipe from './Recipe';
+import Recipe, { IRecipeProps } from './Recipe';
 
 const defaultProps = {
   name: 'Pad Thai',
@@ -11,7 +10,7 @@ const defaultProps = {
   showType: true
 };
 
-const renderRecipe = (props: RecipeProps): RenderResult => {
+const renderRecipe = (props: IRecipeProps): RenderResult => {
   const rtlUtils = render(<Recipe {...props} />);
   return rtlUtils;
 };

@@ -10,7 +10,7 @@ import {
   InputGroupButtonDropdown
 } from 'reactstrap';
 import styled from 'styled-components';
-import { SearchFilterProps } from '../types';
+import { IRecipeTypeOption } from '../types';
 
 const ClearIconWrapper = styled.span`
   float: right;
@@ -21,7 +21,16 @@ const ClearIconWrapper = styled.span`
   opacity: 0.5;
 `;
 
-const SearchFilter: React.FC<SearchFilterProps> = ({
+interface ISearchFilterProps {
+  recipeType: string | null;
+  recipeTypeOptions: IRecipeTypeOption[];
+  handleRecipeTypeChange: (nextRecipeType: string | null) => void;
+  recipeNameSearch: string | null;
+  handleRecipeNameSearchChange: (nextRecipeNameSearch: string | null) => void;
+  handleClear: () => void;
+}
+
+const SearchFilter: React.FC<ISearchFilterProps> = ({
   recipeType,
   recipeTypeOptions,
   handleRecipeTypeChange,
