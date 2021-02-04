@@ -12,15 +12,6 @@ import {
 import styled from 'styled-components';
 import { IRecipeTypeOption } from '../types';
 
-const ClearIconWrapper = styled.span`
-  float: right;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 0.5;
-`;
-
 interface ISearchFilterProps {
   recipeType: string | null;
   recipeTypeOptions: IRecipeTypeOption[];
@@ -91,7 +82,7 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
           aria-label="clear filter and search"
           color="primary"
           outline
-          onClick={(): void => handleClear()}
+          onClick={handleClear}
         >
           <ClearIconWrapper aria-hidden="true">×</ClearIconWrapper>
         </Button>
@@ -99,5 +90,14 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
     </InputGroup>
   );
 };
+
+const ClearIconWrapper = styled.span`
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+`;
 
 export default SearchFilter;

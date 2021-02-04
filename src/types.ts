@@ -22,6 +22,7 @@ export interface IRecipeTypeOption {
   active: boolean;
   disabled: boolean;
 }
+
 export interface IFilters {
   recipeType: string | null;
   recipeNameSearch: string | null;

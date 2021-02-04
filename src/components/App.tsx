@@ -8,10 +8,6 @@ import Counter from './Counter';
 import Recipe from './Recipe';
 import SearchFilter from './SearchFilter';
 
-const SearchFilterCounterWrapper = styled.div`
-  margin-bottom: 16px;
-`;
-
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
@@ -115,5 +111,9 @@ const App: React.FC = () => {
     </Container>
   );
 };
+
+const SearchFilterCounterWrapper = styled.div`
+  margin-bottom: 16px;
+`;
 
 export default App;
