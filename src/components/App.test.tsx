@@ -18,7 +18,8 @@ const mockAdapter = new MockAdapter(adapter);
 const makeGoogleSheetsRow = ({
   name,
   type,
-  link
+  link,
+  notes
 }: Omit<IRecipe, 'id'>): IGoogleSheetsRow => ({
   gsx$name: {
     $t: name
@@ -28,6 +29,9 @@ const makeGoogleSheetsRow = ({
   },
   gsx$link: {
     $t: link
+  },
+  gsx$notes: {
+    $t: notes || ''
   }
 });
 
@@ -40,7 +44,7 @@ const mockGetRecipes = ({
 } = {}): MockAdapter =>
   mockAdapter
     .onGet(
-      '/list/106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8/od6/public/values?alt=json'
+      '/list/106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8/1/public/values?alt=json'
     )
     .replyOnce(responseCode, {
       feed: {
@@ -77,13 +81,15 @@ describe('App', () => {
       {
         name: 'Lasagna',
         type: 'Dinner',
-        link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435'
+        link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435',
+        notes: null
       },
       {
         name: 'Chocolate Chip Cookies',
         type: 'Dessert',
         link:
-          'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/'
+          'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/',
+        notes: null
       }
     ];
 

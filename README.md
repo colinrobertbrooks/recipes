@@ -6,7 +6,7 @@ Things on the internet that we eat.
 
 You can load your own recipes from a [Google Sheet](https://www.google.com/sheets):
 
-1. Start a new spreadsheet, then add `type`, `name`, and `link` column headings to the first sheet (column order doesn't matter, but heading spelling and casing do).
+1. Start a new spreadsheet, then add `type`, `name`, `link` and `notes` column headings to the first sheet (column order doesn't matter, but heading spelling and casing do).
 
 2. [Publish to the web](https://support.google.com/docs/answer/183965).
 

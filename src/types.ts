@@ -8,6 +8,9 @@ export interface IGoogleSheetsRow {
   gsx$link: {
     $t: string;
   };
+  gsx$notes: {
+    $t: string;
+  };
 }
 
 export interface IRecipe {
@@ -15,6 +18,7 @@ export interface IRecipe {
   name: string;
   type: string;
   link: string;
+  notes: string | null;
 }
 
 export interface IRecipeTypeOption {

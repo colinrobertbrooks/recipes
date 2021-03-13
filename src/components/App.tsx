@@ -92,12 +92,13 @@ const App: React.FC = () => {
                     <Counter count={filteredRecipes.length} />
                   </SearchFilterCounterWrapper>
                   {filteredRecipes.length ? (
-                    filteredRecipes.map(({ id, name, type, link }) => (
+                    filteredRecipes.map(({ id, name, type, link, notes }) => (
                       <Recipe
                         key={id}
                         name={name}
                         type={type}
                         link={link}
+                        notes={notes}
                         nameQuery={recipeNameQuery}
                         shouldShowType={!recipeTypeQuery}
                       />

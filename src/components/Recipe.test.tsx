@@ -5,6 +5,7 @@ const defaultProps = {
   name: 'Pad Thai',
   type: 'Dinner',
   link: 'https://www.bonappetit.com/recipe/pad-thai',
+  notes: null,
   nameQuery: null,
   shouldShowType: true
 };
@@ -42,5 +43,13 @@ describe('Recipe', () => {
     );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  test('renders notes when present', () => {
+    const { getByText } = renderRecipe({
+      ...defaultProps,
+      notes: 'Soooo good!'
+    });
+    expect(getByText('"Soooo good!"')).toBeInTheDocument();
   });
 });

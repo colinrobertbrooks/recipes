@@ -13,6 +13,7 @@ const Recipe: React.FC<IRecipeProps> = ({
   name,
   type,
   link,
+  notes,
   nameQuery,
   shouldShowType
 }) => (
@@ -37,6 +38,7 @@ const Recipe: React.FC<IRecipeProps> = ({
         >
           Recipe
         </CardLink>
+        {notes && <CardNotes>&quot;{notes}&quot;</CardNotes>}
       </CardBody>
     </Card>
   </CardWrapper>
@@ -55,6 +57,13 @@ const CardLink = styled(Button)`
   @media (max-width: 576px) {
     display: block;
   }
+`;
+
+const CardNotes = styled.p.attrs({ className: 'text-muted' })`
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  font-style: italic;
 `;
 
 export default Recipe;
