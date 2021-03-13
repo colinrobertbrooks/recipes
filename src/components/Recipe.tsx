@@ -5,16 +5,17 @@ import styled from 'styled-components';
 import { IRecipe } from '../types';
 
 export interface IRecipeProps extends Omit<IRecipe, 'id'> {
-  nameSearch: string | null;
-  showType: boolean;
+  nameQuery: string | null | undefined;
+  shouldShowType: boolean;
 }
 
 const Recipe: React.FC<IRecipeProps> = ({
   name,
   type,
   link,
-  nameSearch,
-  showType
+  notes,
+  nameQuery,
+  shouldShowType
 }) => (
   <CardWrapper>
     <Card>
@@ -23,10 +24,10 @@ const Recipe: React.FC<IRecipeProps> = ({
           <Highlighter
             data-testid="recipe-name"
             highlightClassName="highlight-word-search"
-            searchWords={[nameSearch || '']}
+            searchWords={[nameQuery || '']}
             textToHighlight={name}
           />
-          {showType && <small className="text-muted"> ({type})</small>}
+          {shouldShowType && <small className="text-muted"> ({type})</small>}
         </CardHeader>
         <CardLink
           aria-label={`Recipe for ${name}`}
@@ -37,6 +38,7 @@ const Recipe: React.FC<IRecipeProps> = ({
         >
           Recipe
         </CardLink>
+        {notes && <CardNotes>&quot;{notes}&quot;</CardNotes>}
       </CardBody>
     </Card>
   </CardWrapper>
@@ -55,6 +57,13 @@ const CardLink = styled(Button)`
   @media (max-width: 576px) {
     display: block;
   }
+`;
+
+const CardNotes = styled.p.attrs({ className: 'text-muted' })`
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  font-style: italic;
 `;
 
 export default Recipe;

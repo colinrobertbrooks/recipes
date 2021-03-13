@@ -1,13 +1,13 @@
 import { render, RenderResult } from '@testing-library/react';
-import React from 'react';
 import Recipe, { IRecipeProps } from './Recipe';
 
 const defaultProps = {
   name: 'Pad Thai',
   type: 'Dinner',
   link: 'https://www.bonappetit.com/recipe/pad-thai',
-  nameSearch: null,
-  showType: true
+  notes: null,
+  nameQuery: null,
+  shouldShowType: true
 };
 
 const renderRecipe = (props: IRecipeProps): RenderResult => {
@@ -21,13 +21,16 @@ describe('Recipe', () => {
     expect(getByText('Pad Thai')).toBeInTheDocument();
   });
 
-  test('renders type when showType is true', () => {
+  test('renders type when shouldShowType is true', () => {
     const { getByText } = renderRecipe(defaultProps);
     expect(getByText('(Dinner)')).toBeInTheDocument();
   });
 
-  test('does not render type when showType is false', () => {
-    const { queryByText } = renderRecipe({ ...defaultProps, showType: false });
+  test('does not render type when shouldShowType is false', () => {
+    const { queryByText } = renderRecipe({
+      ...defaultProps,
+      shouldShowType: false
+    });
     expect(queryByText('(Dinner)')).not.toBeInTheDocument();
   });
 
@@ -40,5 +43,13 @@ describe('Recipe', () => {
     );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  test('renders notes when present', () => {
+    const { getByText } = renderRecipe({
+      ...defaultProps,
+      notes: 'Soooo good!'
+    });
+    expect(getByText('"Soooo good!"')).toBeInTheDocument();
   });
 });

@@ -12,14 +12,11 @@
   },
   "rules": {
     "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
+    "no-use-before-define": "off",
     "react/prop-types": "off"
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
   }
 }

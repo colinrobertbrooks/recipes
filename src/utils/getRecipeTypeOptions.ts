@@ -18,11 +18,11 @@ const getRecipeTypeOptions = ({
 }: {
   recipes: IRecipe[];
   filters: IFilters;
-  currentValue: string | null;
+  currentValue: string | null | undefined;
 }): IRecipeTypeOption[] => {
   const typesInRecipes = getTypes(recipes);
   const enabledTypes = getTypes(
-    filterRecipes({ recipes, filters: { ...filters, recipeType: null } })
+    filterRecipes({ recipes, filters: { ...filters, recipeTypeQuery: null } })
   );
 
   return typesInRecipes
