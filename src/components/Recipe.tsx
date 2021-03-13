@@ -5,16 +5,16 @@ import styled from 'styled-components';
 import { IRecipe } from '../types';
 
 export interface IRecipeProps extends Omit<IRecipe, 'id'> {
-  nameSearch: string | null;
-  showType: boolean;
+  nameQuery: string | null | undefined;
+  shouldShowType: boolean;
 }
 
 const Recipe: React.FC<IRecipeProps> = ({
   name,
   type,
   link,
-  nameSearch,
-  showType
+  nameQuery,
+  shouldShowType
 }) => (
   <CardWrapper>
     <Card>
@@ -23,10 +23,10 @@ const Recipe: React.FC<IRecipeProps> = ({
           <Highlighter
             data-testid="recipe-name"
             highlightClassName="highlight-word-search"
-            searchWords={[nameSearch || '']}
+            searchWords={[nameQuery || '']}
             textToHighlight={name}
           />
-          {showType && <small className="text-muted"> ({type})</small>}
+          {shouldShowType && <small className="text-muted"> ({type})</small>}
         </CardHeader>
         <CardLink
           aria-label={`Recipe for ${name}`}

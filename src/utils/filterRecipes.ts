@@ -7,18 +7,18 @@ const filterRecipes = ({
   recipes: IRecipe[];
   filters: IFilters;
 }): IRecipe[] => {
-  const { recipeType, recipeNameSearch } = filters;
+  const { recipeTypeQuery, recipeNameQuery } = filters;
 
   return recipes.filter(recipe => {
     const booleans = [];
 
-    if (recipeType) {
-      booleans.push(recipe.type === recipeType);
+    if (recipeTypeQuery) {
+      booleans.push(recipe.type === recipeTypeQuery);
     }
 
-    if (recipeNameSearch) {
+    if (recipeNameQuery) {
       booleans.push(
-        recipe.name.toLowerCase().search(recipeNameSearch.toLowerCase()) !== -1
+        recipe.name.toLowerCase().search(recipeNameQuery.toLowerCase()) !== -1
       );
     }
 

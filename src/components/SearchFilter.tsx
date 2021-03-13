@@ -13,11 +13,13 @@ import styled from 'styled-components';
 import { IRecipeTypeOption } from '../types';
 
 interface ISearchFilterProps {
-  recipeType: string | null;
+  recipeType: string | null | undefined;
   recipeTypeOptions: IRecipeTypeOption[];
-  handleRecipeTypeChange: (nextRecipeType: string | null) => void;
-  recipeNameSearch: string | null;
-  handleRecipeNameSearchChange: (nextRecipeNameSearch: string | null) => void;
+  handleRecipeTypeChange: (nextRecipeType: string | null | undefined) => void;
+  recipeName: string | null | undefined;
+  handleRecipeNameChange: (
+    nextRecipeNameSearch: string | null | undefined
+  ) => void;
   handleClear: () => void;
 }
 
@@ -25,14 +27,13 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
   recipeType,
   recipeTypeOptions,
   handleRecipeTypeChange,
-  recipeNameSearch,
-  handleRecipeNameSearchChange,
+  recipeName,
+  handleRecipeNameChange,
   handleClear
 }) => {
   const selectedRecipeType = recipeType || 'All';
   const [typeDropdownIsOpen, setTypeDropdownIsOpen] = useState(false);
-  const toggleTypeDropdown = (): void =>
-    setTypeDropdownIsOpen(!typeDropdownIsOpen);
+  const toggleTypeDropdown = () => setTypeDropdownIsOpen(!typeDropdownIsOpen);
 
   return (
     <InputGroup>
@@ -52,7 +53,7 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
         <DropdownMenu>
           <DropdownItem
             active={recipeType === null}
-            onClick={(): void => handleRecipeTypeChange(null)}
+            onClick={() => handleRecipeTypeChange(undefined)}
           >
             All
           </DropdownItem>
@@ -61,7 +62,7 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
               key={value}
               active={active}
               disabled={disabled}
-              onClick={(): void => handleRecipeTypeChange(value)}
+              onClick={() => handleRecipeTypeChange(value)}
             >
               {value}
             </DropdownItem>
@@ -71,10 +72,8 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
       <Input
         placeholder="search recipe names"
         className="text-center"
-        value={recipeNameSearch || ''}
-        onChange={(event): void =>
-          handleRecipeNameSearchChange(event.currentTarget.value)
-        }
+        value={recipeName || ''}
+        onChange={event => handleRecipeNameChange(event.currentTarget.value)}
         spellCheck={false}
       />
       <InputGroupAddon addonType="append">

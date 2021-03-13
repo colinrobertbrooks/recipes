@@ -5,7 +5,10 @@ import {
   waitForElementToBeRemoved
 } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import React from 'react';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router';
+import { Route } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
 import { adapter } from '../api';
 import { IGoogleSheetsRow, IRecipe } from '../types';
 import App from './App';
@@ -46,7 +49,14 @@ const mockGetRecipes = ({
     });
 
 const renderApp = async (): Promise<RenderResult> => {
-  const rtlUtils = render(<App />);
+  const history = createMemoryHistory();
+  const rtlUtils = render(
+    <Router history={history}>
+      <QueryParamProvider ReactRouterRoute={Route}>
+        <App />
+      </QueryParamProvider>
+    </Router>
+  );
   await waitForElementToBeRemoved(() =>
     rtlUtils.getByText('Loading recipes...')
   );
@@ -123,7 +133,7 @@ describe('App', () => {
       });
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(
-        getByText((_, node) => node.textContent === 'Chocolate Chip Cookies')
+        getByText((_, node) => node!.textContent === 'Chocolate Chip Cookies')
       ).toBeInTheDocument();
       expect(queryByText('Lasagna')).not.toBeInTheDocument();
       // clear search

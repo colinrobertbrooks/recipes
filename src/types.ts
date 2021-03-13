@@ -24,6 +24,6 @@ export interface IRecipeTypeOption {
 }
 
 export interface IFilters {
-  recipeType: string | null;
-  recipeNameSearch: string | null;
+  recipeTypeQuery: string | null | undefined;
+  recipeNameQuery: string | null | undefined;
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
+import { useQueryParam, StringParam } from 'use-query-params';
 import styled from 'styled-components';
 import api from '../api';
 import { IRecipe } from '../types';
@@ -12,16 +13,19 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const [recipes, setRecipes] = useState<IRecipe[]>([]);
-  const [recipeType, setRecipeType] = useState<string | null>(null);
-  const [recipeNameSearch, setRecipeNameSearch] = useState<string | null>(null);
+  const [recipeTypeQuery, setRecipeType] = useQueryParam('type', StringParam);
+  const [recipeNameQuery, setRecipeNameQuery] = useQueryParam(
+    'name',
+    StringParam
+  );
   const filters = {
-    recipeType,
-    recipeNameSearch
+    recipeTypeQuery,
+    recipeNameQuery
   };
   const recipeTypeOptions = getRecipeTypeOptions({
     recipes,
     filters,
-    currentValue: recipeType
+    currentValue: recipeTypeQuery
   });
   const filteredRecipes = filterRecipes({ recipes, filters });
 
@@ -33,8 +37,8 @@ const App: React.FC = () => {
       try {
         const nextRecipes = await api.getRecipes();
         setRecipes(sortRecipes(nextRecipes));
-      } catch (e) {
-        setError(e);
+      } catch (err) {
+        setError(err);
       }
       setLoading(false);
     };
@@ -53,7 +57,7 @@ const App: React.FC = () => {
           className="text-center"
         >
           <h1 className="mt-3">Recipes</h1>
-          {((): JSX.Element => {
+          {(() => {
             if (loading) {
               return <p className="text-muted">Loading recipes...</p>;
             }
@@ -67,14 +71,20 @@ const App: React.FC = () => {
                 <>
                   <SearchFilterCounterWrapper>
                     <SearchFilter
-                      recipeType={recipeType}
+                      recipeType={recipeTypeQuery}
                       recipeTypeOptions={recipeTypeOptions}
                       handleRecipeTypeChange={setRecipeType}
-                      recipeNameSearch={recipeNameSearch}
-                      handleRecipeNameSearchChange={setRecipeNameSearch}
-                      handleClear={(): void => {
-                        setRecipeType(null);
-                        setRecipeNameSearch(null);
+                      recipeName={recipeNameQuery}
+                      handleRecipeNameChange={value => {
+                        if (!value) {
+                          setRecipeNameQuery(undefined);
+                        } else {
+                          setRecipeNameQuery(value);
+                        }
+                      }}
+                      handleClear={() => {
+                        setRecipeType(undefined);
+                        setRecipeNameQuery(undefined);
                       }}
                     />
                     <Counter count={filteredRecipes.length} />
@@ -86,14 +96,14 @@ const App: React.FC = () => {
                         name={name}
                         type={type}
                         link={link}
-                        nameSearch={recipeNameSearch}
-                        showType={!recipeType}
+                        nameQuery={recipeNameQuery}
+                        shouldShowType={!recipeTypeQuery}
                       />
                     ))
                   ) : (
                     <p>
-                      No <strong>{recipeType}</strong> recipes matching{' '}
-                      <strong>{recipeNameSearch}.</strong>
+                      No <strong>{recipeTypeQuery}</strong> recipes matching{' '}
+                      <strong>{recipeNameQuery}.</strong>
                     </p>
                   )}
                 </>
