@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,KACE,eACF,CAEA,uBACE,oBAAsB,CACtB,kCACF","file":"main.72e1fdae.chunk.css","sourcesContent":["body {\n  min-width: 320px;\n}\n\n.highlight-word-search {\n  color: #fff !important;\n  background-color: #5bc0de !important;\n}\n"]}
