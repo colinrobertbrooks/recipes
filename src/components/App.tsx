@@ -10,6 +10,7 @@ import Recipe from './Recipe';
 import SearchFilter from './SearchFilter';
 
 const App: React.FC = () => {
+  const [spreadsheet] = useQueryParam('spreadsheet', StringParam);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const [recipes, setRecipes] = useState<IRecipe[]>([]);
@@ -35,7 +36,7 @@ const App: React.FC = () => {
       setLoading(true);
 
       try {
-        const nextRecipes = await api.getRecipes();
+        const nextRecipes = await api.getRecipes(spreadsheet);
         setRecipes(sortRecipes(nextRecipes));
       } catch (err) {
         setError(err);
@@ -44,6 +45,7 @@ const App: React.FC = () => {
     };
 
     fetchRecipes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
