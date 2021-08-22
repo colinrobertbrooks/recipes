@@ -6,13 +6,15 @@ Things on the internet that we eat.
 
 You can load your own recipes from a [Google Sheet](https://www.google.com/sheets):
 
-1. Start a new spreadsheet, then add `type`, `name`, `link` and `notes` column headings to the first sheet (column order doesn't matter, but heading spelling and casing does).
+1. Start a new spreadsheet, then add `type`, `name`, `link` and `notes` column headings to a sheet named "Recipes" (column order doesn't matter, but heading spelling and casing does).
 
 2. [Publish to the web](https://support.google.com/docs/answer/183965).
 
-3. Get the `SPREADSHEET_KEY` from the url: `https://docs.google.com/spreadsheets/d/SPREADSHEET_KEY`.
+3. Get the `SPREADSHEET_ID` from the url: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`.
 
-4. Voila: `https://colinrobertbrooks.github.io/recipes?spreadsheet=SPREADSHEET_KEY`.
+4. [Generate a Google Cloud Platform API Key](https://cloud.google.com/docs/authentication?_ga=2.251668745.-1804148925.1629488635) (`KEY`).
+
+5. Voila: `https://colinrobertbrooks.github.io/recipes?spreadsheetId=SPREADSHEET_ID&key=KEY`.
 
 ## Scripts
 

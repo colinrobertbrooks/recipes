@@ -10,7 +10,8 @@ import Recipe from './Recipe';
 import SearchFilter from './SearchFilter';
 
 const App: React.FC = () => {
-  const [spreadsheet] = useQueryParam('spreadsheet', StringParam);
+  const [spreadsheetId] = useQueryParam('spreadsheetId', StringParam);
+  const [key] = useQueryParam('key', StringParam);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const [recipes, setRecipes] = useState<IRecipe[]>([]);
@@ -36,7 +37,7 @@ const App: React.FC = () => {
       setLoading(true);
 
       try {
-        const nextRecipes = await api.getRecipes(spreadsheet);
+        const nextRecipes = await api.getRecipes(spreadsheetId, key);
         setRecipes(sortRecipes(nextRecipes));
       } catch (err) {
         setError(err);

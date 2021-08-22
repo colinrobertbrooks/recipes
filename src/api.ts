@@ -1,25 +1,27 @@
 import axios from 'axios';
 import { IRecipe } from './types';
-import { mungGoogleSheetsEntry } from './utils';
+import { deserializeRecipes } from './utils';
 
 export const adapter = axios.create({
-  baseURL: 'https://spreadsheets.google.com/feeds/'
+  baseURL: 'https://sheets.googleapis.com/v4/spreadsheets'
 });
+
+export const defaultSpreadsheetId =
+  '106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8';
+export const defaultRange = 'Recipes';
+export const defaultKey = 'AIzaSyAqCMNvKSDiOb0yIAjLF2Z1T5gSsAetaVA';
 
 export default {
   async getRecipes(
-    spreadsheet:
-      | string
-      | null
-      | undefined = '106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8',
-    worksheet = 1 // http://deswal.org/2016/01/02/you-dont-need-od6-when-working-with-google-sheets-json/
+    spreadsheetId: string | null | undefined = defaultSpreadsheetId,
+    key: string | null | undefined = defaultKey
   ): Promise<IRecipe[]> {
+    // https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get
     try {
       const response = await adapter.get(
-        // https://developers.google.com/gdata/samples/spreadsheet_sample
-        `/list/${spreadsheet}/${worksheet}/public/values?alt=json`
+        `${spreadsheetId}/values/${defaultRange}?key=${key}`
       );
-      return mungGoogleSheetsEntry(response.data.feed.entry);
+      return deserializeRecipes(response.data.values);
     } catch (err) {
       throw new Error('Error fetching recipes');
     }

@@ -6,34 +6,20 @@ import {
 } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { createMemoryHistory } from 'history';
+import React from 'react';
 import { Router } from 'react-router';
 import { Route } from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
-import { adapter } from '../api';
-import { IGoogleSheetsRow, IRecipe } from '../types';
+import {
+  adapter,
+  defaultSpreadsheetId,
+  defaultRange,
+  defaultKey
+} from '../api';
+import { IRecipe } from '../types';
 import App from './App';
 
 const mockAdapter = new MockAdapter(adapter);
-
-const makeGoogleSheetsRow = ({
-  name,
-  type,
-  link,
-  notes
-}: Omit<IRecipe, 'id'>): IGoogleSheetsRow => ({
-  gsx$name: {
-    $t: name
-  },
-  gsx$type: {
-    $t: type
-  },
-  gsx$link: {
-    $t: link
-  },
-  gsx$notes: {
-    $t: notes || ''
-  }
-});
 
 const mockGetRecipes = ({
   responseCode = 200,
@@ -43,13 +29,17 @@ const mockGetRecipes = ({
   recipes?: Omit<IRecipe, 'id'>[];
 } = {}): MockAdapter =>
   mockAdapter
-    .onGet(
-      '/list/106-nwBqrxeCGMSY0ZOUAjRvlbL2b2xAJgPy67M_Btc8/1/public/values?alt=json'
-    )
+    .onGet(`${defaultSpreadsheetId}/values/${defaultRange}?key=${defaultKey}`)
     .replyOnce(responseCode, {
-      feed: {
-        entry: [...recipes.map(recipe => makeGoogleSheetsRow(recipe))]
-      }
+      values: [
+        ['type', 'name', 'link', 'notes'],
+        ...recipes.map(({ type, name, link, notes }) => [
+          type,
+          name,
+          link,
+          notes
+        ])
+      ]
     });
 
 const renderApp = async (): Promise<RenderResult> => {
