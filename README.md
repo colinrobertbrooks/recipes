@@ -10,7 +10,7 @@ You can load your own recipes from a [Google Sheet](https://www.google.com/sheet
 
 2. [Publish to the web](https://support.google.com/docs/answer/183965).
 
-3. Get the `SPREADSHEET_ID` from the url: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID`.
+3. Get the `SPREADSHEET_ID` from the url: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`.
 
 4. [Generate a Google Cloud Platform API Key](https://cloud.google.com/docs/authentication?_ga=2.251668745.-1804148925.1629488635) (`KEY`).
 
