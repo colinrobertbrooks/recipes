@@ -1,18 +1,4 @@
-export interface IGoogleSheetsRow {
-  gsx$name: {
-    $t: string;
-  };
-  gsx$type: {
-    $t: string;
-  };
-  gsx$link: {
-    $t: string;
-  };
-  gsx$notes: {
-    $t: string;
-  };
-}
-
+export type TSpreadsheetDatum = { [key: string]: string };
 export interface IRecipe {
   id: number;
   name: string;
