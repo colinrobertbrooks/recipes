@@ -3,7 +3,7 @@ import { TSpreadsheetDatum, IRecipe } from '../types';
 const deserializeRecipes = (values: string[][]): IRecipe[] => {
   const [headRow, ...bodyRows] = values;
   const data: TSpreadsheetDatum[] = [];
-  bodyRows.forEach(row => {
+  bodyRows.forEach((row) => {
     const datum: TSpreadsheetDatum = {};
     row.forEach((val, valIdx) => {
       datum[headRow[valIdx]] = val;
@@ -16,7 +16,7 @@ const deserializeRecipes = (values: string[][]): IRecipe[] => {
     name,
     type,
     link,
-    notes: notes || null
+    notes: notes || null,
   }));
 };
 

@@ -2,14 +2,14 @@ import { IRecipe, IFilters } from '../types';
 
 const filterRecipes = ({
   recipes,
-  filters
+  filters,
 }: {
   recipes: IRecipe[];
   filters: IFilters;
 }): IRecipe[] => {
   const { recipeTypeQuery, recipeNameQuery } = filters;
 
-  return recipes.filter(recipe => {
+  return recipes.filter((recipe) => {
     const booleans = [];
 
     if (recipeTypeQuery) {

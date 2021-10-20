@@ -14,7 +14,7 @@ const getTypes = (recipes: IRecipe[]): string[] =>
 const getRecipeTypeOptions = ({
   recipes,
   filters,
-  currentValue
+  currentValue,
 }: {
   recipes: IRecipe[];
   filters: IFilters;
@@ -27,10 +27,10 @@ const getRecipeTypeOptions = ({
 
   return typesInRecipes
     .sort((a, b) => a.localeCompare(b))
-    .map(value => ({
+    .map((value) => ({
       value,
       active: value === currentValue,
-      disabled: !enabledTypes.includes(value)
+      disabled: !enabledTypes.includes(value),
     }));
 };
 

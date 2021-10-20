@@ -8,7 +8,7 @@ const defaultProps = {
   link: 'https://www.bonappetit.com/recipe/pad-thai',
   notes: null,
   nameQuery: null,
-  shouldShowType: true
+  shouldShowType: true,
 };
 
 const renderRecipe = (props: IRecipeProps): RenderResult => {
@@ -30,7 +30,7 @@ describe('Recipe', () => {
   test('does not render type when shouldShowType is false', () => {
     const { queryByText } = renderRecipe({
       ...defaultProps,
-      shouldShowType: false
+      shouldShowType: false,
     });
     expect(queryByText('(Dinner)')).not.toBeInTheDocument();
   });
@@ -49,7 +49,7 @@ describe('Recipe', () => {
   test('renders notes when present', () => {
     const { getByText } = renderRecipe({
       ...defaultProps,
-      notes: 'Soooo good!'
+      notes: 'Soooo good!',
     });
     expect(getByText('"Soooo good!"')).toBeInTheDocument();
   });
