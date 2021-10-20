@@ -92,7 +92,7 @@ describe('App', () => {
       const renderedNames = getAllByTestId('recipe-name');
       const expectedNames = ['Chocolate Chip Cookies', 'Lasagna'];
       renderedNames.forEach((el, idx) =>
-        expect(el.textContent).toBe(expectedNames[idx])
+        expect(el).toHaveTextContent(expectedNames[idx])
       );
     });
 
@@ -129,7 +129,7 @@ describe('App', () => {
       });
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(
-        getByText((_, node) => node!.textContent === 'Chocolate Chip Cookies')
+        getByText((_, node) => node?.textContent === 'Chocolate Chip Cookies')
       ).toBeInTheDocument();
       expect(queryByText('Lasagna')).not.toBeInTheDocument();
       // clear search
