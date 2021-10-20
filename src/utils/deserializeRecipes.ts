@@ -11,15 +11,13 @@ const deserializeRecipes = (values: string[][]): IRecipe[] => {
     data.push(datum);
   });
 
-  return data.map(({ name, type, link, notes }, id) => {
-    return {
-      id,
-      name,
-      type,
-      link,
-      notes: notes || null
-    };
-  });
+  return data.map(({ name, type, link, notes }, id) => ({
+    id,
+    name,
+    type,
+    link,
+    notes: notes || null
+  }));
 };
 
 export default deserializeRecipes;

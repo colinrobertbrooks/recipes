@@ -1,22 +1,16 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "colinrcummings",
-    "plugin:@typescript-eslint/recommended",
-    "colinrcummings/jest",
-    "colinrcummings/prettier",
-    "colinrcummings/prettier/react"
+    "colinrobertbrooks",
+    "colinrobertbrooks/typescript",
+    "colinrobertbrooks/jest",
+    "colinrobertbrooks/prettier"
   ],
   "env": {
     "browser": true
   },
   "rules": {
-    "@typescript-eslint/interface-name-prefix": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
-    "import/no-unresolved": "off",
-    "no-use-before-define": "off",
-    "react/prop-types": "off"
+    "no-use-before-define": "off"
   }
 }

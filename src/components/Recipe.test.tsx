@@ -1,4 +1,5 @@
 import { render, RenderResult } from '@testing-library/react';
+import React from 'react';
 import Recipe, { IRecipeProps } from './Recipe';
 
 const defaultProps = {
