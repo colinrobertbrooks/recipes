@@ -3,7 +3,7 @@ import { IRecipe } from './types';
 import { deserializeRecipes } from './utils';
 
 export const adapter = axios.create({
-  baseURL: 'https://sheets.googleapis.com/v4/spreadsheets'
+  baseURL: 'https://sheets.googleapis.com/v4/spreadsheets',
 });
 
 export const defaultSpreadsheetId =
@@ -25,5 +25,5 @@ export default {
     } catch (err) {
       throw new Error('Error fetching recipes');
     }
-  }
+  },
 };

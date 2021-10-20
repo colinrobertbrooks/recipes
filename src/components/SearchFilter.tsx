@@ -7,7 +7,7 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
-  InputGroupButtonDropdown
+  InputGroupButtonDropdown,
 } from 'reactstrap';
 import styled from 'styled-components';
 import { IRecipeTypeOption } from '../types';
@@ -29,7 +29,7 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
   handleRecipeTypeChange,
   recipeName,
   handleRecipeNameChange,
-  handleClear
+  handleClear,
 }) => {
   const selectedRecipeType = recipeType || 'All';
   const [typeDropdownIsOpen, setTypeDropdownIsOpen] = useState(false);
@@ -73,7 +73,7 @@ const SearchFilter: React.FC<ISearchFilterProps> = ({
         placeholder="search recipe names"
         className="text-center"
         value={recipeName || ''}
-        onChange={event => handleRecipeNameChange(event.currentTarget.value)}
+        onChange={(event) => handleRecipeNameChange(event.currentTarget.value)}
         spellCheck={false}
       />
       <InputGroupAddon addonType="append">

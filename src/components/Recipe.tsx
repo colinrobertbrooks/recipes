@@ -15,7 +15,7 @@ const Recipe: React.FC<IRecipeProps> = ({
   link,
   notes,
   nameQuery,
-  shouldShowType
+  shouldShowType,
 }) => (
   <CardWrapper>
     <Card>

@@ -22,12 +22,12 @@ const App: React.FC = () => {
   );
   const filters = {
     recipeTypeQuery,
-    recipeNameQuery
+    recipeNameQuery,
   };
   const recipeTypeOptions = getRecipeTypeOptions({
     recipes,
     filters,
-    currentValue: recipeTypeQuery
+    currentValue: recipeTypeQuery,
   });
   const filteredRecipes = filterRecipes({ recipes, filters });
 
@@ -78,7 +78,7 @@ const App: React.FC = () => {
                       recipeTypeOptions={recipeTypeOptions}
                       handleRecipeTypeChange={setRecipeType}
                       recipeName={recipeNameQuery}
-                      handleRecipeNameChange={value => {
+                      handleRecipeNameChange={(value) => {
                         if (!value) {
                           setRecipeNameQuery(undefined);
                         } else {

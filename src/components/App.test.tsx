@@ -2,7 +2,7 @@ import {
   fireEvent,
   render,
   RenderResult,
-  waitForElementToBeRemoved
+  waitForElementToBeRemoved,
 } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { createMemoryHistory } from 'history';
@@ -14,7 +14,7 @@ import {
   adapter,
   defaultSpreadsheetId,
   defaultRange,
-  defaultKey
+  defaultKey,
 } from '../api';
 import { IRecipe } from '../types';
 import App from './App';
@@ -23,7 +23,7 @@ const mockAdapter = new MockAdapter(adapter);
 
 const mockGetRecipes = ({
   responseCode = 200,
-  recipes = []
+  recipes = [],
 }: {
   responseCode?: number;
   recipes?: Omit<IRecipe, 'id'>[];
@@ -37,9 +37,9 @@ const mockGetRecipes = ({
           type,
           name,
           link,
-          notes
-        ])
-      ]
+          notes,
+        ]),
+      ],
     });
 
 const renderApp = async (): Promise<RenderResult> => {
@@ -72,15 +72,14 @@ describe('App', () => {
         name: 'Lasagna',
         type: 'Dinner',
         link: 'https://www.food.com/recipe/barilla-no-boil-lasagna-80435',
-        notes: null
+        notes: null,
       },
       {
         name: 'Chocolate Chip Cookies',
         type: 'Dessert',
-        link:
-          'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/',
-        notes: null
-      }
+        link: 'https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/',
+        notes: null,
+      },
     ];
 
     beforeEach(() => {
@@ -116,16 +115,12 @@ describe('App', () => {
     });
 
     test('searches recipe name', async () => {
-      const {
-        getByPlaceholderText,
-        getByText,
-        queryByText,
-        getByLabelText
-      } = await renderApp();
+      const { getByPlaceholderText, getByText, queryByText, getByLabelText } =
+        await renderApp();
 
       // search for cookie
       fireEvent.change(getByPlaceholderText(recipeNameSearchPlaceholderText), {
-        target: { value: 'cookie' }
+        target: { value: 'cookie' },
       });
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(
@@ -137,7 +132,7 @@ describe('App', () => {
       expect(getByText('2 recipes')).toBeInTheDocument();
       // search for lasagna
       fireEvent.change(getByPlaceholderText(recipeNameSearchPlaceholderText), {
-        target: { value: 'lasagna' }
+        target: { value: 'lasagna' },
       });
       expect(getByText('1 recipe')).toBeInTheDocument();
       expect(queryByText('Chocolate Chip Cookies')).not.toBeInTheDocument();
@@ -148,7 +143,7 @@ describe('App', () => {
   describe('on api error', () => {
     beforeEach(() => {
       mockGetRecipes({
-        responseCode: 500
+        responseCode: 500,
       });
     });
 
